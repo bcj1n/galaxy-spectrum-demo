@@ -31,7 +31,7 @@ dust_delta = st.sidebar.slider("Dust slope delta", -1.2, 0.4, 0.0)
 logU = st.sidebar.slider("Ionization parameter logU", -4.0, -1.0, -2.0)
 
 ## Redshift
-redshift = st.sidebar.slider("Redshift", 6.0, 10.0, 8.0)
+redshift = st.sidebar.slider("Redshift", 3.0, 10.0, 7.0)
 
 sfh = {
     "type": "constant",
