@@ -1,5 +1,5 @@
 import numpy as np
-import bagpipes as pipes
+import bagpipes_dev as pipes
 
 from utils import convert_spectrum_units
 

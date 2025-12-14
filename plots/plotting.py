@@ -10,8 +10,8 @@ mpl.rcParams['ytick.right'] = True
 mpl.rcParams['axes.labelsize'] = 18
 
 
-from bagpipes.plotting.plot_sfh import add_sfh
-from bagpipes.models.star_formation_history import star_formation_history
+from bagpipes_dev.plotting.plot_sfh import add_sfh
+from bagpipes_dev.models.star_formation_history import star_formation_history
 from utils import convert_spectrum_units
 
 def plot_spectrum(wavelength, flux):
