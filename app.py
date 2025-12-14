@@ -6,8 +6,15 @@ from plots.plotting import plot_spectrum, plot_spectrum_mag, plot_sfh
 from utils import cosmo
 
 st.set_page_config(
-    page_title="Galaxy Spectrum Demo",
+    page_title="Galaxy Spectrum Modeling Demo | Interactive SED Explorer",
+    page_icon="🌌",
     layout="wide"
+)
+st.markdown(
+    """
+    <meta name="description" content="Interactive demo for modeling galaxy spectra and SEDs. Explore age, metallicity, dust, and redshift effects.">
+    """,
+    unsafe_allow_html=True
 )
 
 st.title("Interactive Galaxy Spectrum Model")
@@ -17,26 +24,26 @@ st.sidebar.header("Model Parameters")
 
 ## SFH parameters
 mass_formed = st.sidebar.slider("Mass formed (log)", 6.0, 14.0, 10.0)
-age = st.sidebar.slider("Stellar age (Gyr)", 0.01, 6.5, .1)
+age = st.sidebar.slider("Stellar age (Gyr)", 0.01, 3.5, .1)
 metallicity = st.sidebar.selectbox(
     "Metallicity (Z)",
     [0.001, 0.004, 0.02]
 )
 
 ## Dust parameters
-dust_av = st.sidebar.slider("Dust A_V", 0.0, 3.0, 0.5)
+dust_av = st.sidebar.slider("Dust Av (mag)", 0.0, 3.0, 0.5)
 dust_delta = st.sidebar.slider("Dust slope delta", -1.2, 0.4, 0.0)
 
 ## Nebular parameters
 logU = st.sidebar.slider("Ionization parameter logU", -4.0, -1.0, -2.0)
 
 ## Redshift
-redshift = st.sidebar.slider("Redshift", 3.0, 10.0, 7.0)
+redshift = st.sidebar.slider("Redshift", 2.0, 10.0, 7.0)
 
 sfh = {
     "type": "constant",
     "tstart": cosmo.age(redshift).value-age if (cosmo.age(redshift).value-age)>0 else 0.001,
-    "tstop": cosmo.age(redshift).value-0.005,
+    "tstop": cosmo.age(redshift).value-0.003,
     "metallicity": metallicity,
     "massformed": mass_formed,
 }

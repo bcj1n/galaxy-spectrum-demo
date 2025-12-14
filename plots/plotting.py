@@ -41,12 +41,14 @@ def plot_spectrum_mag(wavelength, flux, redshift=None):
     ax.set_ylabel("AB Magnitude")
 
     xticks = ax.get_xticks().tolist()
+    ax.set_xticks(xticks)
     ax.set_xticklabels([f"{x/10000:.1f}" for x in xticks])
     ax.set_xlabel("Observed Wavelength (microns)")
     if redshift:
         # upper tick to show rest-frame wavelength
         ax2 = ax.twiny()
         ax2.set_xlim(ax.get_xlim())
+        ax2.set_xticks(xticks)
         ax2.set_xticklabels([f"{x/(1+redshift)/10000:.2f}" for x in xticks],
                                 fontsize=10)
         ax2.set_xlabel("Rest-frame Wavelength")
