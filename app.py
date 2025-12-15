@@ -13,6 +13,7 @@ st.set_page_config(
 st.markdown(
     """
     <meta name="description" content="Interactive demo for modeling galaxy spectra and SEDs. Explore age, metallicity, dust, and redshift effects.">
+    <meta name="google-site-verification" content="fgzb16Wxs42rXspXIhZgQPJfBFpSOReLCPksDagSTnQ" />
     """,
     unsafe_allow_html=True
 )
