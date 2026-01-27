@@ -23,11 +23,22 @@ st.title("Interactive Galaxy Spectrum Model")
 st.sidebar.header("Model Parameters")
 
 ## SFH parameters
-mass_formed = st.sidebar.slider("Mass formed (log)", 6.0, 14.0, 10.0)
-age = st.sidebar.slider("Stellar age (Gyr)", 0.01, 3.5, .1)
-metallicity = st.sidebar.selectbox(
+
+### SFH1
+mass_formed1 = st.sidebar.slider("Mass formed 1 (log)", 6.0, 14.0, 10.0)
+age1 = st.sidebar.slider("Stellar age (Gyr)", 0.01, 3.5, .1)
+metallicity1 = st.sidebar.selectbox(
     "Metallicity (Z)",
     [0.001, 0.004, 0.02]
+)
+
+### SFH2
+mass_formed2 = st.sidebar.slider("Mass formed 2 (log)", 6.0, 14.0, 9.3)
+age2 = st.sidebar.slider("Burst age (Gyr)", 0.01, 1., 0.1)
+metallicity2 = st.sidebar.selectbox(
+    "Burst Metallicity (Z)",
+    [0.001, 0.004, 0.02],
+    index=1
 )
 
 ## Dust parameters
@@ -40,12 +51,19 @@ logU = st.sidebar.slider("Ionization parameter logU", -4.0, -1.0, -2.0)
 ## Redshift
 redshift = st.sidebar.slider("Redshift", 2.0, 10.0, 7.0)
 
-sfh = {
+sfh1 = {
     "type": "constant",
-    "tstart": cosmo.age(redshift).value-age if (cosmo.age(redshift).value-age)>0 else 0.001,
+    "tstart": cosmo.age(redshift).value-age1 if (cosmo.age(redshift).value-age1)>0 else 0.001,
     "tstop": cosmo.age(redshift).value-0.003,
-    "metallicity": metallicity,
-    "massformed": mass_formed,
+    "metallicity": metallicity1,
+    "massformed": mass_formed1,
+}
+
+sfh2 = {
+    "type": "burst",
+    "age": age2,
+    "metallicity": metallicity2,
+    "massformed": mass_formed2,
 }
 
 dust = {
@@ -65,14 +83,14 @@ def compute_model(sfh, dust, nebular, redshift):
     return generate_bagpipes_spectrum(sfh, dust, nebular, redshift)
 
 wav, spec = compute_model(
-    sfh,
+    [sfh1, sfh2],
     dust,
     nebular,
     redshift
 )
 # --- Plot SFH ---
 st.subheader("Star Formation History")
-fig = plot_sfh(sfh, redshift)
+fig = plot_sfh([sfh1, sfh2], redshift)
 st.pyplot(fig, use_container_width=False)
 st.markdown("""
 This demo uses [Bagpipes](https://bagpipes.readthedocs.io/en/latest/) to generate galaxy spectra based on user-defined parameters.

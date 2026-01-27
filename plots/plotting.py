@@ -55,15 +55,13 @@ def plot_spectrum_mag(wavelength, flux, redshift=None):
                            
     return fig
 
-def plot_sfh(sfh, redshift):
+def plot_sfh(sfh_list, redshift):
     fig, ax = plt.subplots(figsize=(6, 4))
-    sfh_type = sfh['type']
-    ax.text(0.95, 0.9, f"{sfh_type.capitalize()} SFH",
-            transform=ax.transAxes, ha='right')
-    model_comp = {
-        sfh_type: sfh,
-        "redshift": redshift,
-    }
+    model_comp = { "redshift": redshift}
+    for sfh in sfh_list:
+        sfh_type = sfh['type']
+        model_comp[sfh_type] = sfh
+        #add_sfh(sfh, ax)
     _sfh = star_formation_history(model_comp)
     ax.text(0.95, 0.8, f"log(Mstar)={_sfh.stellar_mass:.2f}",
             transform=ax.transAxes, ha='right')
