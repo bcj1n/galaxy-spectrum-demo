@@ -19,6 +19,6 @@ def generate_bagpipes_spectrum(
     }
     for sfh in sfh_list:
         sfh_type = sfh["type"]
-        model_components[sfh_type] = sfh
+        model_components.update({sfh_type: sfh})
     model = pipes.model_galaxy(model_components, spec_wavs=np.linspace(3000, 9000, 200))
     return model.wavelengths, model.spectrum_full
