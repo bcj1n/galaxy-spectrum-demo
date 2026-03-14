@@ -14,10 +14,26 @@ from bagpipes_dev.plotting.plot_sfh import add_sfh
 from bagpipes_dev.models.star_formation_history import star_formation_history
 from utils import convert_spectrum_units
 
+def annotate_lines(ax, redshift, fontsize=6):
+    # mark common rest-frame emission lines in observed frame
+    for line_wav, line_name in [(1216., r'Ly$\alpha$'),
+                                (1549., r'C IV 1549'), (1909., r'C III] 1909'),
+                                (3727., r'[O II] 3727'),
+                                (3869., r'[Ne III] 3869'),
+                                (4102., r'H$\delta$'), (4324., r'H$\gamma$'), (4861., r'H$\beta$'),
+                                (4959., r'[O III] 4959'), (5007., r'[O III] 5007'),
+                                (5876., r'He I 5876'),
+                                (6563., r'H$\alpha$')]:
+        ax.axvline(line_wav * (1. + redshift),
+                color='gray', ls=':', lw=0.8, alpha=0.5)
+        ax.text(line_wav * (1. + redshift), ax.get_ylim()[1],
+                line_name, fontsize=fontsize, color='gray',
+                rotation=90, va='top', ha='right')
+    return None
+    
+
 def plot_spectrum(wavelength, flux):
     fig, ax = plt.subplots(figsize=(6, 4))
-    ax.text(0.05, 0.9, f"Wavelength range: {wavelength.min():.0f} - {wavelength.max():.0f} Å",
-            transform=ax.transAxes)
     
     ax.plot(wavelength, flux)
     ax.set(ylim=(0, flux.max()*1.1))
@@ -29,8 +45,6 @@ def plot_spectrum(wavelength, flux):
 def plot_spectrum_mag(wavelength, flux, redshift=None):
     fig, ax = plt.subplots(figsize=(6, 4))
     if redshift:
-        ax.text(0.05, 0.9, f"Wavelength range: {wavelength.min()/(1+redshift):.0f} - {wavelength.max()/(1+redshift):.0f} Å (rest-frame)",
-                transform=ax.transAxes)
         wav_lyA = 1215.67 * (1 + redshift)
     
     wav, mag = convert_spectrum_units(np.c_[wavelength, flux], spec_units='ergscma', out_units='mag').T
@@ -38,6 +52,8 @@ def plot_spectrum_mag(wavelength, flux, redshift=None):
     ylim_upper = mag.min() - .12
     ylim_lower = min(mag[wav>wav_lyA].max() + .5, 31)
     ax.set(ylim=(ylim_lower, ylim_upper), xlim=(wav.min(), wav.max()))
+
+    annotate_lines(ax, redshift)
     ax.set_ylabel("AB Magnitude")
 
     xticks = ax.get_xticks().tolist()
@@ -56,7 +72,7 @@ def plot_spectrum_mag(wavelength, flux, redshift=None):
     return fig
 
 def plot_sfh(sfh_list, redshift):
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(6, 2))
     model_comp = { "redshift": redshift}
     for sfh in sfh_list:
         sfh_type = sfh['type']

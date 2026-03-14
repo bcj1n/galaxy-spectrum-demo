@@ -26,19 +26,20 @@ st.sidebar.header("Model Parameters")
 
 ### SFH1
 mass_formed1 = st.sidebar.slider("Mass formed 1 (log)", 6.0, 14.0, 10.0)
-age1 = st.sidebar.slider("Stellar age (Gyr)", 0.01, 3.5, .1)
+age1 = st.sidebar.slider("Stellar age (Gyr)", 0.01, 3.5, .2)
 metallicity1 = st.sidebar.selectbox(
     "Metallicity (Z)",
-    [0.001, 0.004, 0.02]
+    [0.004, 0.02, 0.1, 0.2, 0.4, 0.6, 0.8],
+    index=5,
 )
 
 ### SFH2
-mass_formed2 = st.sidebar.slider("Mass formed 2 (log)", 6.0, 14.0, 9.3)
+mass_formed2 = st.sidebar.slider("Mass formed 2 (log)", 6.0, 14.0, 7.3)
 age2 = st.sidebar.slider("Burst age (Gyr)", 0.01, 1., 0.1)
 metallicity2 = st.sidebar.selectbox(
     "Burst Metallicity (Z)",
-    [0.001, 0.004, 0.02],
-    index=1
+    [0.004, 0.02, 0.1, 0.2, 0.4, 0.6, 0.8],
+    index=1,
 )
 
 ## Dust parameters
@@ -46,7 +47,7 @@ dust_av = st.sidebar.slider("Dust Av (mag)", 0.0, 3.0, 0.5)
 dust_delta = st.sidebar.slider("Dust slope delta", -1.2, 0.4, 0.0)
 
 ## Nebular parameters
-logU = st.sidebar.slider("Ionization parameter logU", -4.0, -1.0, -2.0)
+logU = st.sidebar.slider("Ionization parameter logU", -4.0, 0.0, -2.0)
 
 ## Redshift
 redshift = st.sidebar.slider("Redshift", 2.0, 10.0, 7.0)
